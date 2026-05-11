@@ -29,23 +29,41 @@ export const todoFunctions = {
 
     // add an id to the newTodo. You can use the generateId function to create an id.
     // hint: array.concat
+    const cloned = this.cloneArrayOfObjects(todos)
+    const todoWithId={
+      ...newTodo,
+      id:this.generateId(),
+      done:false,
+    };
+    return cloned.concat(todoWithId)
   },
   deleteTodo: function (todos, idToDelete) {
     // should leave the input argument todos unchanged (you can use cloneArrayOfObjects)
 
     // return a new array, this should not contain any todo with an id of idToDelete
     // hint: array.filter
+    const cloned =this.cloneArrayOfObjects(todos);
+    return cloned.filter(todo => todo.id !==idToDelete)
   },
   markTodo: function (todos, idToMark) {
     // should leave the input argument todos unchanged (you can use cloneArrayOfObjects)
     // in the new todo array, all elements will remain unchanged except the one with id: idToMark
     // this element will have its done value toggled
     // hint: array.map
+    const cloned =this.cloneArrayOfObjects(todos);
+    return cloned.map(todo=> {
+      if(todo.id===idToMark){
+        return{...todo,done:!todo.done}
+      }
+      return todo
+    })
   },
   sortTodos: function (todos, sortFunction) {
     // stretch goal! Do this last
     // should leave the input arguement todos unchanged (you can use cloneArrayOfObjects)
     // sortFunction will have same signature as the sort function in array.sort
     // hint: array.slice, array.sort
+    const cloned = this.cloneArrayOfObjects(todos);
+    return cloned.sort(sortFunction)
   },
 };

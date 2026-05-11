@@ -16,39 +16,52 @@ function setupTodo() {
   const createTodoNode = function (todo) {
     const todoNode = document.createElement("li");
     // you will need to use addEventListener
-
+      
     // add span holding description
-
+    const span =document.createElement("span")
+    span.textContent= todo.description;
+    todoNode.appendChild(span);
     // this adds the delete button
     const deleteButtonNode = document.createElement("button");
+        deleteButtonNode.textContent = "Delete";
+
     deleteButtonNode.addEventListener("click", function (event) {
+        event.stopPropagation();
       const newState = todoFunctions.deleteTodo(state, todo.id);
       update(newState);
     });
     todoNode.appendChild(deleteButtonNode);
 
     // add markTodo button
+   todoNode.addEventListener("click", function () {
+    const newState = todoFunctions.markTodo(state, todo.id);
+    update(newState);
+    });
 
     // add classes for css
-
-    return todoNode;
-  };
-
+  if (todo.done) {
+      todoNode.classList.add("done");
+    }
+  return todoNode;
+};
   // bind create todo form
   if (addTodoForm) {
     addTodoForm.addEventListener("submit", function (event) {
       // https://developer.mozilla.org/en-US/docs/Web/Events/submit
       // what does event.preventDefault do?
       // what is inside event.target?
-
-      const description = "?"; // event.target ....
-
+        event.preventDefault();
+        
+      const description = event.target.elements.description.value; // event.target ....
+      const newTodo={
+        description
+      };
       // hint: todoFunctions.addTodo
-      const newState = []; // ?? change this!
+      const newState = todoFunctions.addTodo(state, newTodo); // ?? change this!
       update(newState);
+      event.target.reset();
     });
   }
-
   // you should not need to change this function
   const update = function (newState) {
     state = newState;
@@ -66,8 +79,5 @@ function setupTodo() {
     // you may want to add a class for css
     container.replaceChild(todoListNode, container.firstChild);
   };
-
-  if (container) renderState(state);
-}
-
 setupTodo();
+}
